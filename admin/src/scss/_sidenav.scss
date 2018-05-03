@@ -1,0 +1,50 @@
+.sidenav-box {
+    display: block;
+    position: fixed;
+    min-width: 200px;
+    max-width: 400px;
+    height: 100vh;
+
+    background-color: $dark;
+
+    z-index: 1;
+
+    .brand {
+        color: $white;
+        text-align: center;
+        padding: 0.5rem 0;
+    }
+
+    hr {
+        margin-top: 0;
+    }
+
+    .title {
+        display: block;
+        padding: 0.5rem 1rem;
+        font-weight: 700;
+        color: $white;
+    }
+
+    .separation {
+        background-color: $gray-600;
+        margin-top: 1rem;
+    }
+
+    .nav {
+        .nav-link {
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+            color: $gray-500;
+
+            &:hover {
+                color: $light;
+            }
+        }
+
+        svg {
+            margin-top: 0.3rem;
+            float: right;
+        }
+    }
+}

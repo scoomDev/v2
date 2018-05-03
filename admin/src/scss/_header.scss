@@ -1,0 +1,23 @@
+.header-box {
+    display: block;
+    position: relative;
+    width: 100%;
+
+    color: $white;
+
+    z-index: 1000;
+
+    & #hamburger {
+        &:hover {
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+    }
+
+    & .nav {
+
+        & .nav-link {
+            color: $white;
+        }
+    }
+}

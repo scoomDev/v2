@@ -1,0 +1,29 @@
+@import 'libraries/bootstrap_custom';
+
+@import 'header.scss';
+@import 'sidenav.scss';
+
+html, body {
+    overflow-x: hidden;
+}
+
+#content {
+    display: block;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+
+    left: 0;
+    
+    background-color: $white;
+    
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.3s ease-in-out;
+
+    z-index: 50;
+
+    &.open {
+        transform: translate3d(200px, 0, 0);
+        padding-right: 200px;
+    }
+}
