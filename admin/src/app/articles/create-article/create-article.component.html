@@ -1,0 +1,110 @@
+<div id="create-article" class="container-fluid">
+  <h1 class="mt-3 mb-5">Créer un article</h1>
+
+  <div>
+    {{ articleForm.value | json }}
+  </div>
+
+  <form [formGroup]="articleForm" (ngSubmit)="createArticle()">
+
+    <div class="row">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+          <!-- CATEGORIES && PLATFORMS -->
+          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab"
+            aria-controls="home">
+            Catégories / Plateformes
+            <!-- VALIDATORS -->
+            <span
+              *ngIf="categories.valid && (categories.dirty || categories.touched) && platforms.valid && (platforms.dirty || platforms.touched)"
+              class="float-right text-success">
+              <i class="fas fa-check-circle"></i>
+            </span>
+            <!-- END OF VALIDATORS -->
+          </a>
+          <!-- END OF CATEGORIES && PLATFORMS -->
+
+          <!-- TITLE -->
+          <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab"
+            aria-controls="profile">
+            Titre
+            <!-- VALIDATORS -->
+            <span *ngIf="title.invalid && (title.dirty || title.touched)" class="float-right text-danger">
+              <i class="fas fa-times-circle"></i>
+            </span>
+            <span *ngIf="title.valid && (title.dirty || title.touched)" class="float-right text-success">
+              <i class="fas fa-check-circle"></i>
+            </span>
+            <!-- END OF VALIDATORS -->
+          </a>
+          <!-- END OF TITLE -->
+
+          <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab"
+            aria-controls="messages">
+            Contenu
+            <!-- VALIDATORS -->
+            <span *ngIf="articleContent.valid" class="float-right text-success">
+              <i class="fas fa-check-circle"></i>
+            </span>
+            <!-- END OF VALIDATORS -->
+          </a>
+          <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab"
+            aria-controls="settings">Settings</a>
+
+          <button *ngIf="articleForm.valid" class="btn btn-success" type="submit" [disabled]="articleForm.invalid">créer</button>
+          <div *ngIf="articleForm.invalid" class="btn btn-danger">Veuillez remplir correctement le formulaire</div>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+            <div class="row">
+              <div class="col-sm-6 category">
+                <div class="form-group">
+                  <label class="center-block">Catégories
+                    <select class="form-control" formControlName="categories" multiple>
+                      <option *ngFor="let category of categoriesList" [value]="category.name">{{ category.name }}</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6 platform">
+                <div class="form-group">
+                  <label class="center-block">Plateformes
+                    <select class="form-control" formControlName="platforms" multiple>
+                      <option *ngFor="let platform of platformsList" [value]="platform.name">{{ platform.name }}</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+            <div class="form-group">
+              <label for="title">Tite de l'article</label>
+              <input name="title" id="title" class="form-control" type="text" formControlName="title">
+
+              <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger">
+                <div *ngIf="title.errors.required">
+                  Il est important de mettre un titre pour son article !
+                </div>
+                <div *ngIf="title.errors.minlength">
+                  Le titre doit-être plus grand que 20 caractères.
+                </div>
+                <div *ngIf="title.errors.maxlength">
+                  Le titre ne doit pas dépasser les 50 caractères.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+            <div class="form-group">
+              <label for="articleContent">Contenu de l'article</label>
+              <textarea name="articleContent" id="articleContent" class="form-control" formControlName="articleContent"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

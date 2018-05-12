@@ -2,6 +2,7 @@
 
 @import 'header.scss';
 @import 'sidenav.scss';
+@import 'create-article.scss';
 
 html, body {
     overflow-x: hidden;
@@ -14,9 +15,9 @@ html, body {
     min-height: 100vh;
 
     left: 0;
-    
+
     background-color: $white;
-    
+
     transform: translate3d(0, 0, 0);
     transition: transform 0.3s ease-in-out;
 

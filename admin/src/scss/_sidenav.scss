@@ -32,15 +32,30 @@
     }
 
     .nav {
-        .nav-link {
-            padding: 0.3rem 1rem;
-            font-size: 0.85rem;
-            color: $gray-500;
+      .nav-item {
 
-            &:hover {
-                color: $light;
-            }
+        &:hover {
+          background-color: darken($dark, 5%);
         }
+
+        &.active {
+          background-color: darken($dark, 5%);
+
+          .nav-link{
+            color: $white;
+            font-weight: 700;
+          }
+        }
+        .nav-link {
+          padding: 0.3rem 1rem;
+          font-size: 0.85rem;
+          color: $gray-500;
+
+          &:hover {
+            color: $light;
+          }
+        }
+      }
 
         svg {
             margin-top: 0.3rem;

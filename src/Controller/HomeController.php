@@ -7,15 +7,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use App\Entity\Article;
 
+/**
+ * Class HomeController
+ * 
+ * @Route("/")
+ */
 class HomeController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("home", name="homepage")
      */
     public function IndexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $articlesList = $em->getRepository(Article::class)->findAll();
+        $articlesList = $em->getRepository(Article::class)->findByIsPublished('true');
 
         return $this->render('home/index.html.twig', [
             'articlesList' => $articlesList
