@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ArticlesListComponent } from './articles/articles-list/articles-list.component';
@@ -20,6 +20,8 @@ import { ArticleService } from './services/article.service';
 import { CategoryService } from './services/category.service';
 import { PlatformService } from './services/platform.service';
 import { AlertMessageService } from './alert-message/alert-message.service';
+import { FilterByTitlePipe } from './pipe/filter-by-title.pipe';
+import { FilterByIsPublishedPipe } from './pipe/filter-by-is-published.pipe';
 
 const ROUTES: Routes = [
   { path: 'article/list', component: ArticlesListComponent },
@@ -40,11 +42,14 @@ const ROUTES: Routes = [
     CategoriesListComponent,
     PlatformsListComponent,
     AlertMessageComponent,
+    FilterByTitlePipe,
+    FilterByIsPublishedPipe,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     RouterModule.forRoot(ROUTES)
   ],
   providers: [ArticleService, CategoryService, PlatformService, AlertMessageService],

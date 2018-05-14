@@ -5,9 +5,9 @@ export class Article {
   author: string;
   platforms: Platform[];
   categories: Category[];
-  createdAt: Date;
-  updatedAt: Date;
-  isPublished: boolean;
+  created_at: Date;
+  updated_at: Date;
+  is_published: boolean;
   image: string;
   slug: string;
 }
