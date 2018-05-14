@@ -51,7 +51,7 @@ class PlatformRepository extends ServiceEntityRepository
     public function findAllPlatforms()
     {
         return $this->createQueryBuilder('p')
-            ->select('p.name')
+            ->select('p.id', 'p.name')
             ->getQuery()
             ->getResult()
         ;

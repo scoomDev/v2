@@ -80,7 +80,6 @@ export class CreateArticleComponent implements OnInit {
 
   createArticle() {
     if (this.articleForm.valid) {
-      console.log(this.articleForm.value);
       const article = new Article();
       article.title = this.articleForm.value['title'];
       article.content = this.articleForm.value['articleContent'];
@@ -96,10 +95,7 @@ export class CreateArticleComponent implements OnInit {
       article.platforms = platforms;
       article.categories = categories;
 
-      console.log(article);
-
       this.articleService.createArticle(JSON.stringify(article));
-      this.articleService.emitArticlesList();
       this.router.navigate(['/article', 'list']);
     }
   }

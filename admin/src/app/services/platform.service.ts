@@ -1,6 +1,8 @@
+import { Platform } from './../data-model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
+import { AlertMessageService } from '../alert-message/alert-message.service';
 
 @Injectable()
 export class PlatformService {
@@ -13,11 +15,10 @@ export class PlatformService {
     })
   };
 
-  platformsForNewArticle: any[] = [];
   platformsList: any[] = [];
   platformsListSubject = new Subject<any[]>();
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private alertService: AlertMessageService) {}
 
   emitPlatformsList() {
     this.platformsListSubject.next(this.platformsList);
@@ -25,10 +26,10 @@ export class PlatformService {
 
   getPlatformsList() {
     return this._http
-      .get<any[]>(this.rootPath + 'list')
+      .get<Platform[]>(this.rootPath + 'list')
       .subscribe(
-        response => {
-          this.platformsList = response;
+        res => {
+          this.platformsList = res;
           this.emitPlatformsList();
         },
         error => console.error('erreur de chargement', error)
@@ -36,28 +37,55 @@ export class PlatformService {
   }
 
   getPlatformsById(platforms: any[]) {
+    const platformsForNewArticle = [];
     platforms.forEach(element => {
-      this.platformsForNewArticle.push(this.platformsList.filter(
+      platformsForNewArticle.push(this.platformsList.filter(
         el => element === el.name
       ));
     });
 
-    return this.platformsForNewArticle;
+    return platformsForNewArticle;
   }
 
-  deletePlatform(platform) {
+  createPlatform(platform) {
     this._http
-      .delete(this.rootPath + 'delete/' + platform.id, this.httpOptions)
+      .post(this.rootPath + 'create', platform, this.httpOptions)
       .subscribe(
-          res => {
-          console.log(res);
-          this.platformsList = this.platformsList.filter(
-            el => platform !== el
-          );
+        res => {
+          const newPlatform = new Platform();
+          newPlatform.name = res['name'];
+          this.platformsList.push(newPlatform);
+          this.alertService.success(`"${res['name']}" à bien été créé !`);
+          this.emitPlatformsList();
+        }
+      );
+  }
+
+  updatePlatform(platform) {
+    this._http
+      .put(this.rootPath + 'update', platform, this.httpOptions)
+      .subscribe(
+        res => {
+          this.platformsList.map(el => el.id === res['id'] ? el.name = res['name'] : el.name = el.name);
+          this.alertService.success('Le nom de la plateforme à bien été mis à jour !');
           this.emitPlatformsList();
         },
-        err => console.log(err),
-        () => console.log('complete')
+        err => console.error(err)
+      );
+  }
+
+  deletePlatform(platformId) {
+    this._http
+      .delete(this.rootPath + 'delete/' + platformId, this.httpOptions)
+      .subscribe(
+          res => {
+          this.platformsList = this.platformsList.filter(
+            el => res['name'] !== el.name
+          );
+          this.alertService.warning(`"${res['name']}" à bien été supprimé !`);
+          this.emitPlatformsList();
+        },
+        err => console.error(err)
       );
   }
 

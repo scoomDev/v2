@@ -51,7 +51,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function findAllCategories()
     {
         return $this->createQueryBuilder('c')
-            ->select('c.name')
+            ->select('c.id', 'c.name')
             ->getQuery()
             ->getResult()
         ;

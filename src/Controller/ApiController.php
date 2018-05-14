@@ -118,7 +118,8 @@ class ApiController extends FOSRestController
         $em->flush();
 
         return $this->view(
-            Response::HTTP_NO_CONTENT
+            $article,
+            Response::HTTP_CREATED
         );
     }
 
@@ -137,6 +138,75 @@ class ApiController extends FOSRestController
     }
 
     /**
+     * @Rest\Post(
+     *      path = "/categories/create",
+     *      name = "category-create"
+     * )
+     * 
+     * @Rest\View(StatusCode=201)
+     */
+    public function CreateCategoryAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $data = $this->get('jms_serializer')->deserialize($request->getContent(), 'array', 'json');
+        $category = new Category();
+
+        $category->setName($data['name']);
+
+        $em->persist($category);
+        $em->flush();
+
+        return $this->view(
+            $category,
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Rest\Put(
+     *      path = "/categories/update",
+     *      name = "category-update"
+     * )
+     * 
+     * @Rest\View(StatusCode=201)
+     */
+    public function UpdateCategoryAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $this->get('jms_serializer')->deserialize($request->getContent(), 'array', 'json');
+        $category = $em->getRepository(Category::class)->findOneById($data['id']);
+        $category->setName($data['name']);
+        $em->flush();
+
+        return $this->view(
+            $category,
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Rest\Delete(
+     *      path = "/categories/delete/{id}",
+     *      name = "category-delete"
+     * )
+     * 
+     * @Rest\View(StatusCode=204)
+     */
+    public function DeleteCategoryAction(int $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository(Category::class)->findOneById($id);
+        $em->remove($category);
+        $em->flush();
+
+        return $this->view(
+            $category,
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
      * @Rest\Get(
      *      path = "/platforms/list",
      *      name = "platforms-list_show"
@@ -148,6 +218,75 @@ class ApiController extends FOSRestController
     {
         $platforms = $this->getDoctrine()->getRepository(Platform::class)->findAllPlatforms();
         return $platforms;
+    }
+
+    /**
+     * @Rest\Post(
+     *      path = "/platforms/create",
+     *      name = "platform-create"
+     * )
+     * 
+     * @Rest\View(StatusCode=201)
+     */
+    public function CreatePlatformAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $data = $this->get('jms_serializer')->deserialize($request->getContent(), 'array', 'json');
+        $platform = new Platform();
+
+        $platform->setName($data['name']);
+
+        $em->persist($platform);
+        $em->flush();
+
+        return $this->view(
+            $platform,
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Rest\Put(
+     *      path = "/platforms/update",
+     *      name = "platform-update"
+     * )
+     * 
+     * @Rest\View(StatusCode=201)
+     */
+    public function UpdatePlatformAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $this->get('jms_serializer')->deserialize($request->getContent(), 'array', 'json');
+        $platform = $em->getRepository(Platform::class)->findOneById($data['id']);
+        $platform->setName($data['name']);
+        $em->flush();
+
+        return $this->view(
+            $platform,
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Rest\Delete(
+     *      path = "/platforms/delete/{id}",
+     *      name = "platform-delete"
+     * )
+     * 
+     * @Rest\View(StatusCode=204)
+     */
+    public function DeletePlatformAction(int $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $platform = $em->getRepository(Platform::class)->findOneById($id);
+        $em->remove($platform);
+        $em->flush();
+
+        return $this->view(
+            $platform,
+            Response::HTTP_CREATED
+        );
     }
 
 }

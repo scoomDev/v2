@@ -28,8 +28,8 @@ export class ArticleService {
     this._http
       .get<any[]>(this.rootPath + 'list')
       .subscribe(
-        response => {
-          this.articlesList = response;
+        res => {
+          this.articlesList = res;
           this.emitArticlesList();
         },
         error => console.error('erreur de chargement', error)
@@ -40,11 +40,11 @@ export class ArticleService {
     this._http
       .post(this.rootPath + 'create', article, this.httpOptions)
       .subscribe(
-        response => {
-          this.alertService.success('L\'article à bien été créé !');
+        res => {
+          this.alertService.success(`"${res['title']}" à bien été créé !`);
           this.emitArticlesList();
         },
-        err => console.log(err)
+        err => console.error(err)
       );
   }
 
@@ -52,16 +52,15 @@ export class ArticleService {
     this._http
       .post<any>(this.rootPath + 'toggleIsPublished/' + id, this.httpOptions)
       .subscribe(
-        response => {
-          console.log(response);
-          if (response === true) {
+        res => {
+          if (res === true) {
             this.alertService.success('Votre article à bien été mis en ligne');
           } else {
             this.alertService.warning('Votre article à bien été mis dans les brouillon');
           }
           this.emitArticlesList();
         },
-        error => console.error('une erreur s\'est produite lors du changement de status')
+        err => console.error('une erreur s\'est produite lors du changement de status', err)
       );
   }
 
@@ -69,15 +68,14 @@ export class ArticleService {
     this._http
       .delete(this.rootPath + 'delete/' + article.id, this.httpOptions)
       .subscribe(
-          response => {
+          res => {
           this.articlesList = this.articlesList.filter(
             el => article !== el
           );
           this.emitArticlesList();
-          this.alertService.warning('l\'article à bien été supprimé !');
+          this.alertService.warning(`"${res['title']}" à bien été supprimé !`);
         },
-        err => console.log(err),
-        () => console.log('complete')
+        err => console.error(err)
       );
   }
 }
