@@ -7,7 +7,8 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Titre</th>
-          <th scope="col">Slug</th>
+          <th scope="col">Plateformes</th>
+          <th scope="col">Catégories</th>
           <th scope="col">Auteur</th>
           <th scope="col">En ligne</th>
           <th scope="col">Créé le</th>
@@ -18,13 +19,14 @@
         <tr *ngFor="let article of articlesList">
           <th scope="row">{{ article.id }}</th>
           <td>{{ article.title }}</td>
-          <td>{{ article.slug }}</td>
+          <td><span *ngFor='let platform of article.platforms'>{{ platform.name }}, </span></td>
+          <td><span *ngFor='let category of article.categories'>{{ category.name }}, </span></td>
           <td>{{ article.author }}</td>
-          <td *ngIf="article.is_published" class="text-success">
-            <i class="fas fa-check"></i>
-          </td>
-          <td *ngIf="!article.is_published" class="text-danger">
-            <i class="fas fa-times"></i>
+          <td>
+            <label class="switch" for="{{ article.id }}">
+              <input type="checkbox" id="{{ article.id }}" [checked]="article.is_published" (click)="toggleIsPublished(article.id)">
+              <span class="slider round"></span>
+            </label>
           </td>
           <td>{{ article.created_at | date:'longDate' }}</td>
           <td>

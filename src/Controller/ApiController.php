@@ -27,7 +27,7 @@ class ApiController extends FOSRestController
      *      name = "articles-list_show"
      * )
      * 
-     * @Rest\View
+     * @Rest\View(StatusCode=200)
      */
     public function ArticlesListAction()
     {
@@ -76,6 +76,33 @@ class ApiController extends FOSRestController
     }
 
     /**
+     * @Rest\Post(
+     *      path = "/articles/toggleIsPublished/{id}",
+     *      name = "toggle-status"
+     * )
+     * 
+     * @Rest\View(StatusCode=201)
+     */
+    public function ToggleStatusAction(int $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $em->getRepository(Article::class)->findOneById($id);
+
+        if ($article->getIsPublished() === true) {
+            $article->setIsPublished(false);
+        } else {
+            $article->setIsPublished(true);
+        }
+
+        $em->flush();
+
+        return $this->view(
+            $article->getIsPublished(),
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
      * @Rest\Delete(
      *      path = "/articles/delete/{id}",
      *      name = "articles-delete"
@@ -83,7 +110,7 @@ class ApiController extends FOSRestController
      * 
      * @Rest\View(StatusCode=204)
      */
-    public function ArticlesDeleteAction($id)
+    public function ArticlesDeleteAction(int $id)
     {
         $em = $this->getDoctrine()->getManager();
         $article = $em->getRepository(Article::class)->findOneById($id);
@@ -91,8 +118,7 @@ class ApiController extends FOSRestController
         $em->flush();
 
         return $this->view(
-            $article,
-            Response::HTTP_CREATED
+            Response::HTTP_NO_CONTENT
         );
     }
 
@@ -102,7 +128,7 @@ class ApiController extends FOSRestController
      *      name = "categories-list_show"
      * )
      * 
-     * @Rest\View
+     * @Rest\View(StatusCode=200)
      */
     public function CategoriesListAction()
     {
@@ -116,7 +142,7 @@ class ApiController extends FOSRestController
      *      name = "platforms-list_show"
      * )
      * 
-     * @Rest\View
+     * @Rest\View(StatusCode=200)
      */
     public function PlatformsListAction()
     {

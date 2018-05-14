@@ -14,10 +14,12 @@ import { CreateArticleComponent } from './articles/create-article/create-article
 import { ArticleShowComponent } from './articles/article-show/article-show.component';
 import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
 import { PlatformsListComponent } from './platform/platforms-list/platforms-list.component';
+import { AlertMessageComponent } from './alert-message/alert-message.component';
 
 import { ArticleService } from './services/article.service';
 import { CategoryService } from './services/category.service';
 import { PlatformService } from './services/platform.service';
+import { AlertMessageService } from './alert-message/alert-message.service';
 
 const ROUTES: Routes = [
   { path: 'article/list', component: ArticlesListComponent },
@@ -37,6 +39,7 @@ const ROUTES: Routes = [
     ArticleShowComponent,
     CategoriesListComponent,
     PlatformsListComponent,
+    AlertMessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,7 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [ArticleService, CategoryService, PlatformService],
+  providers: [ArticleService, CategoryService, PlatformService, AlertMessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

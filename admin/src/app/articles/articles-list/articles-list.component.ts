@@ -24,6 +24,11 @@ export class ArticlesListComponent implements OnInit, OnDestroy {
     this.artcileService.emitArticlesList();
   }
 
+  toggleIsPublished(articleId) {
+    this.artcileService.toggleIsPublishedStatus(articleId);
+    console.log(articleId);
+  }
+
   delete(article): void {
     this.artcileService.deleteArticle(article);
   }

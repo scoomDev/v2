@@ -1,12 +1,14 @@
 import { Subscription } from 'rxjs/Subscription';
-import { PlatformService } from './../../services/platform.service';
-import { CategoryService } from './../../services/category.service';
-import { ArticleService } from './../../services/article.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Article, Platform, Category } from '../../data-model';
 import { Router } from '@angular/router';
 import { getLocaleDateTimeFormat } from '@angular/common';
+
+import { PlatformService } from './../../services/platform.service';
+import { CategoryService } from './../../services/category.service';
+import { ArticleService } from './../../services/article.service';
+import { AlertMessageService } from '../../alert-message/alert-message.service';
 
 @Component({
   selector: 'app-create-article',
@@ -26,6 +28,7 @@ export class CreateArticleComponent implements OnInit {
     private articleService: ArticleService,
     private categoryService: CategoryService,
     private platformService: PlatformService,
+    private alertService: AlertMessageService,
     private router: Router
   ) { }
 
@@ -50,7 +53,8 @@ export class CreateArticleComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(50)]],
       articleContent: ['', [Validators.required, Validators.minLength(10)]],
       platforms: ['', Validators.required],
-      categories: ['', Validators.required]
+      categories: ['', Validators.required],
+      isPublished: false
     });
   }
 
@@ -70,6 +74,10 @@ export class CreateArticleComponent implements OnInit {
     return this.articleForm.get('categories');
   }
 
+  get isPublished() {
+    return this.articleForm.get('isPublished');
+  }
+
   createArticle() {
     if (this.articleForm.valid) {
       console.log(this.articleForm.value);
@@ -79,7 +87,7 @@ export class CreateArticleComponent implements OnInit {
       article.author = 'Zhato';
       article.createdAt = new Date();
       article.updatedAt = new Date();
-      article.isPublished = false;
+      article.isPublished = this.articleForm.value['isPublished'];
       article.image = 'mon-image.jpg';
 
       const platforms: Platform[] = this.platformService.getPlatformsById(this.articleForm.value['platforms']);
